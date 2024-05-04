@@ -2,10 +2,10 @@ const mysql = require('mysql');
 // require("dotenv").config();
 
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "mysqldib",
-    password: "nafipass",
-    database: "mess_manager"
+    host: "bwp9g7snxmgeecm9vqc7-mysql.services.clever-cloud.com",
+    user: "unlzgkcuufoaqton",
+    password: "YV49HHhkHx4IzCsIEQGA",
+    database: "bwp9g7snxmgeecm9vqc7"
 });
 
 
