@@ -395,7 +395,7 @@ mealRouter.get('/meals', (req, res) => {
   //cron job at 6.30pm that iterate previous dates meal and copy them for tomorrow
   //block from frontend that no one can update his lunch meal after 11am
 
-  schedule.scheduleJob("push-job", "* 00 18 * * *", async () => {
+  schedule.scheduleJob("push-job", "* 35 22 * * *", async () => {
     console.log("Good job dude");
     //copy the today's all entry. and insert entry's with the replacing the date with tomorrows here
     

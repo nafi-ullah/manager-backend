@@ -2,10 +2,15 @@ const mysql = require('mysql');
  //require("dotenv").config();
 
 const db = mysql.createConnection({
-    host: "mess-db.cpsw4s4as3ri.us-east-1.rds.amazonaws.com",
-    user: "messadmin",
+    // host: "mess-db.cpsw4s4as3ri.us-east-1.rds.amazonaws.com",
+    // user: "messadmin",
+    // password: "sustSWE$$99666",
+    // database: "managerDB",
+    // port: "3306"
+    host: "54.236.250.225",
+    user: "messremote",
     password: "sustSWE$$99666",
-    database: "managerDB",
+    database: "managerdb",
     port: "3306"
 });
 
