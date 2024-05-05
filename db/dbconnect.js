@@ -2,10 +2,10 @@ const mysql = require('mysql');
  //require("dotenv").config();
 
 const db = mysql.createConnection({
-    host: "54.236.250.225",
-    user: "messremote",
+    host: "mess-db.cpsw4s4as3ri.us-east-1.rds.amazonaws.com",
+    user: "messadmin",
     password: "sustSWE$$99666",
-    database: "managerdb",
+    database: "managerDB",
     port: "3306"
 });
 
@@ -23,7 +23,7 @@ function checkAndCreateTables() {
     // SQL statements to create tables if they don't exist
     const createMessTable = `
       CREATE TABLE IF NOT EXISTS mess (
-        messid INT AUTO_INCREMENT PRIMARY KEY,
+        messid INT PRIMARY KEY,
         messname VARCHAR(255)
       );
 
@@ -40,7 +40,7 @@ function checkAndCreateTables() {
 
     const createUserTable = `
     CREATE TABLE IF NOT EXISTS users (
-        userid INT AUTO_INCREMENT PRIMARY KEY,
+        userid INT PRIMARY KEY,
         messid INT,
         name VARCHAR(50),
         email VARCHAR(70),

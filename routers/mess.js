@@ -31,8 +31,8 @@ messRouter.get('/mess', (req, res) => {
   
   // POST a new mess
   messRouter.post('/mess', (req, res) => {
-    const { messname } = req.body;
-    connection.query('INSERT INTO mess (messname) VALUES (?)', messname, (error, results) => {
+    const { messid, messname } = req.body;
+    connection.query('INSERT INTO mess (messid, messname) VALUES (?,?)',[messid, messname], (error, results) => {
       if (error) {
         res.status(500).json({ error: 'Internal server error' });
         return;

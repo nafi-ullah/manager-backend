@@ -77,8 +77,8 @@ userRouter.get('/users', (req, res) => {
   
   // POST a new user
   userRouter.post('/users', (req, res) => {
-    const { messid, name, email, password, role } = req.body;
-    connection.query('INSERT INTO users (messid, name, email, password, role) VALUES (?, ?, ?, ?, ?)', [messid, name, email, password, role], (error, results) => {
+    const { messid,userid, name, email, password, role } = req.body;
+    connection.query('INSERT INTO users (messid,userid, name, email, password, role) VALUES (?, ?, ?, ?, ?,?)', [messid,userid, name, email, password, role], (error, results) => {
       if (error) {
         res.status(500).json({ error: 'Internal server error' });
         return;
