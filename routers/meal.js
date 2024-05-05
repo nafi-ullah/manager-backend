@@ -128,9 +128,12 @@ mealRouter.get('/meals', (req, res) => {
     const query = `
       SELECT 
         users.name AS username,
-        SUM(CASE WHEN meal.lunchmeal = 'chicken' THEN meal.lunchcount ELSE 0 END) AS totalChicken,
-        SUM(CASE WHEN meal.lunchmeal = 'fish' THEN meal.lunchcount ELSE 0 END) AS totalFish,
-        SUM(CASE WHEN meal.lunchmeal = 'rice' THEN meal.lunchcount ELSE 0 END) AS totalRice
+        SUM(CASE WHEN meal.lunchmeal = 'chicken' THEN meal.lunchcount ELSE 0 END + 
+        CASE WHEN meal.dinner = 'chicken' THEN meal.dinnercount ELSE 0 END) AS totalChicken,
+        SUM(CASE WHEN meal.lunchmeal = 'fish' THEN meal.lunchcount ELSE 0 END + 
+        CASE WHEN meal.dinner = 'fish' THEN meal.dinnercount ELSE 0 END) AS totalFish,
+        SUM(CASE WHEN meal.lunchmeal = 'rice' THEN meal.lunchcount ELSE 0 END + 
+        CASE WHEN meal.dinner = 'rice' THEN meal.dinnercount ELSE 0 END) AS totalRice
       FROM meal
       INNER JOIN users ON meal.userid = users.userid
       WHERE meal.messid = ? AND meal.date BETWEEN ? AND ?
