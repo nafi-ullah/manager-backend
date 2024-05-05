@@ -4,6 +4,26 @@ const express = require('express');
 const userRouter = express.Router();
 const jwt = require('jsonwebtoken');
 
+function getCurrentDateTime() {
+  const now = new Date();
+
+  // Get the date in dd-mm-yyyy format
+  const date = ("0" + now.getDate()).slice(-2) + "-" + ("0" + (now.getMonth() + 1)).slice(-2) + "-" + now.getFullYear();
+
+  // Get the time in 24-hour format
+  const time = ("0" + now.getHours()).slice(-2) + ":" + ("0" + now.getMinutes()).slice(-2) + ":" + ("0" + now.getSeconds()).slice(-2);
+
+  return { date, time };
+}
+
+userRouter.get('/', (req, res) => {
+ 
+
+  const { date, time } = getCurrentDateTime();
+res.json({message: `hellow nafi, its ${date} ${time}`});
+   
+  });
+
 userRouter.get('/users', (req, res) => {
 
   const query = `
