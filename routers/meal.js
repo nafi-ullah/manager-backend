@@ -425,6 +425,28 @@ mealRouter.get('/meals', (req, res) => {
 
     schedule.cancelJob("push-job");
   });
+
+  mealRouter.post('/tomorrowsmeal', (req, res) => {
+    const {  today } = req.body;
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const query = `SELECT * FROM meal WHERE date = ?`;
+  connection.query(query, [today], (err, results) => {
+    if (err) throw err;
+
+    // Modify the date of each entry to tomorrow's date and insert them back into the table
+    results.forEach(entry => {
+      entry.date = tomorrow;
+      const insertQuery = `INSERT INTO meal (userid, messid, lunchmeal, lunchcount,lunchcomment, dinner, dinnercount, dinnercomment, date) VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)`;
+      connection.query(insertQuery, [entry.userid, entry.messid, entry.lunchmeal, entry.lunchcount,'', entry.dinner, entry.dinnercount,'', entry.date], (err, result) => {
+        if (err) throw err;
+        console.log(`Inserted entry with mealid ${result.insertId}`);
+      });
+    });
+  });
+  });
+
+  
   
   module.exports = mealRouter;
 
