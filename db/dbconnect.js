@@ -7,17 +7,17 @@ const db = mysql.createConnection({
     // password: "sustSWE$$99666",
     // database: "managerDB",
     // port: "3306"
-    // host: "54.236.250.225",
-    // user: "messremote",
-    // password: "sustSWE$$99666",
-    // database: "managerdb",
-    // port: "3306"
-
-    host: "localhost",
-    user: "mysqldib",
-    password: "nafipass",
-    database: "mess_manager",
+    host: "54.236.250.225",
+    user: "messremote",
+    password: "sustSWE$$99666",
+    database: "managerdb",
     port: "3306"
+
+    // host: "localhost",
+    // user: "mysqldib",
+    // password: "nafipass",
+    // database: "mess_manager",
+    // port: "3306"
 });
 
 
