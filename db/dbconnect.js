@@ -12,15 +12,12 @@ const db = mysql.createConnection({
     password: "sustSWE$$99666",
     database: "managerdb",
     port: "3306"
-
     // host: "localhost",
     // user: "mysqldib",
     // password: "nafipass",
     // database: "mess_manager",
     // port: "3306"
 });
-
-
 db.connect((err) => {
     if (err) {
         console.error('Error connecting to database:', err.stack);
