@@ -395,7 +395,7 @@ mealRouter.get('/meals', (req, res) => {
   //cron job at 6.30pm that iterate previous dates meal and copy them for tomorrow
   //block from frontend that no one can update his lunch meal after 11am
 
-  schedule.scheduleJob("push-job", "* 10 15 * * *", async () => {
+  schedule.scheduleJob("push-job", "* 50 11 * * *", async () => {
     console.log("Good job dude");
     //copy the today's all entry. and insert entry's with the replacing the date with tomorrows here
     
@@ -426,24 +426,50 @@ mealRouter.get('/meals', (req, res) => {
     schedule.cancelJob("push-job");
   });
 
-  mealRouter.post('/tomorrowsmeal', (req, res) => {
-    const {  today } = req.body;
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const query = `SELECT * FROM meal WHERE date = ?`;
-  connection.query(query, [today], (err, results) => {
-    if (err) throw err;
-
-    // Modify the date of each entry to tomorrow's date and insert them back into the table
-    results.forEach(entry => {
-      entry.date = tomorrow;
-      const insertQuery = `INSERT INTO meal (userid, messid, lunchmeal, lunchcount,lunchcomment, dinner, dinnercount, dinnercomment, date) VALUES (?, ?, ?, ?, ?, ?, ?, ? , ?)`;
-      connection.query(insertQuery, [entry.userid, entry.messid, entry.lunchmeal, entry.lunchcount,'', entry.dinner, entry.dinnercount,'', entry.date], (err, result) => {
+  mealRouter.post('/tomorrowsmeal', async (req, res) => {
+    try {
+      const { date } = req.body;
+      if (!date) {
+        return res.status(400).send('Date is required');
+      }
+  
+      const today = new Date(date);
+      today.setHours(0, 0, 0, 0);
+  
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+  
+      // Check if there are already entries for tomorrow
+      const checkQuery = `SELECT COUNT(*) AS count FROM meal WHERE date = ?`;
+      connection.query(checkQuery, [tomorrow], (err, results) => {
         if (err) throw err;
-        console.log(`Inserted entry with mealid ${result.insertId}`);
+  
+        const count = results[0].count;
+        if (count > 0) {
+          return res.status(400).send('Entries for tomorrow already exist');
+        }
+  
+        // Query today's entries from the meal table
+        const query = `SELECT * FROM meal WHERE date = ?`;
+        connection.query(query, [today], (err, results) => {
+          if (err) throw err;
+  
+          // Modify the date of each entry to tomorrow's date and insert them back into the table
+          results.forEach(entry => {
+            entry.date = tomorrow;
+            const insertQuery = `INSERT INTO meal (userid, messid, lunchmeal, lunchcount, lunchcomment, dinner, dinnercount, dinnercomment, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            connection.query(insertQuery, [entry.userid, entry.messid, entry.lunchmeal, entry.lunchcount, '', entry.dinner, entry.dinnercount, '', entry.date], (err, result) => {
+              if (err) throw err;
+              console.log(`Inserted entry with mealid ${result.insertId}`);
+            });
+          });
+  
+          res.status(200).send('Entries copied to tomorrow');
+        });
       });
-    });
-  });
+    } catch (err) {
+      res.status(500).send('Server error');
+    }
   });
 
   
